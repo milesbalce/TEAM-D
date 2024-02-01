@@ -1,3 +1,28 @@
+# Team members' information
+team_members = """
+##### Store your, name, email, student_id and class_number as STRINGS #####
+#name = 'Balce Miles Santos'
+#np_email = 's10255611@connect.np.edu.sg'
+#student_id = 'S10255611B'
+#class_number = 'TF03'
+
+#name = "Chua Meng Sven"
+#np_email = 's10256106@connect.np.edu.sg'
+#student_id = 'S10256106H'
+#class_number = 'TF03'
+
+#name = 'Amber Chong Rei En'
+#np_email = 'S10258314@connect.np.edu.sg'
+#student_id = 'S10258314C'
+#class_number = 'TF03'
+"""
+
+# Write to a text file
+with open('team_members.txt', 'w') as file:
+    file.write(team_members)
+
+print("Team members' information have been written to team_members.txt")
+
 def parse_csv(data):
     # Splitting the data string into individual lines
     lines = data.strip().split("\n")
