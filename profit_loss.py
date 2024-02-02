@@ -132,7 +132,7 @@ def analyze_profit_trends(changes):
         top_deficits_output.append(f"[{ranks[amount]} NET PROFIT DEFICIT] Day {deficit[0]}, Amount: SGD {abs(deficit[1])}")
     
     # Combine all outputs
-    final_output = "\n".join(all_deficits_output + [""] + top_deficits_output)
+    final_output = '\n'.join(all_deficits_output) + '\n' + '\n'.join(top_deficits_output)
     
     return final_output
 
