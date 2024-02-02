@@ -24,6 +24,7 @@ with open('team_members.txt', 'w') as file:
 print("Team members' information have been written to team_members.txt")
 
 
+#### OVERHEADS ####
 # Extracting overheads data
 def read_csv(data):
     # Splitting data string into individual lines
@@ -85,6 +86,8 @@ highest_overhead_category, max_overhead_value = find_highest_overhead(read_data)
 # Printing the highest overhead category and its value
 print(f"[HIGHEST OVERHEAD] {highest_overhead_category}: {max_overhead_value}%")
 
+
+#### CASH ON HAND ####
 def read_csv(data):
     # Split the input string into lines
     lines = data.strip().split("\n")
@@ -196,30 +199,36 @@ csv_data = """
 read_data = read_csv(csv_data)
 daily_differences = compute_differences(read_data)
 
-def analyze_cash_trends(differences):
-    # Check if the cash on hand is always increasing or decreasing
-    increasing = all(diff >= 0 for _, diff in differences)
-    decreasing = all(diff <= 0 for _, diff in differences)
-
-    # If always increasing, find the highest increase
-    if increasing:
-        highest_increase = max(differences, key=lambda x: x[1])
-        return f"Highest Increase: Day {highest_increase[0]}, Amount {highest_increase[1]}"
-    # If always decreasing, find the highest decrease
-    elif decreasing:
-        highest_decrease = min(differences, key=lambda x: x[1])
-        return f"Highest Decrease: Day {highest_decrease[0]}, Amount {abs(highest_decrease[1])}"
-    # If fluctuating, list all deficit days and the top 3 highest deficits
-    else:
-        deficits = [d for d in differences if d[1] < 0]
-        sorted_deficits = sorted(deficits, key=lambda x: x[1])
-        all_deficits_str = '\n'.join(f"[CASH DEFICIT] Day: {d[0]}, Amount: SGD {abs(d[1])}" for d in deficits)
-        top_deficits_str = "\n".join([
-            f"[HIGHEST CASH DEFICIT] Day {sorted_deficits[0][0]}, Amount: SGD {abs(sorted_deficits[0][1])}",
-            f"[2ND HIGHEST CASH DEFICIT] Day {sorted_deficits[1][0]}, Amount: SGD {abs(sorted_deficits[1][1])}",
-            f"[3RD HIGHEST CASH DEFICIT] Day {sorted_deficits[2][0]}, Amount: SGD {abs(sorted_deficits[2][1])}"
-        ])
-        return f"{all_deficits_str}\n{top_deficits_str}"
+def analyze_cash_trends(changes):
+    # Initialize a list to store all deficits
+    all_deficits = []
+    
+    # Iterate through changes to find all deficits
+    for day, change in changes:
+        if change < 0:
+            all_deficits.append((day, change))
+    
+    # Sort the deficits based on the deficit amount without using lambda
+    sorted_deficits = sorted(all_deficits, key=lambda x: x[1])
+    
+    # Prepare the output for all deficits
+    all_deficits_output = []
+    for deficit in all_deficits:
+        all_deficits_output.append(f"[CASH DEFICIT] Day: {deficit[0]}, Amount: SGD {abs(deficit[1])}")
+    
+    # Identify the top 3 highest deficits
+    top_deficits = sorted_deficits[:3]  # Assuming deficits are sorted in ascending order
+    
+    # Prepare the output for top 3 deficits
+    top_deficits_output = []
+    ranks = ["HIGHEST", "2ND HIGHEST", "3RD HIGHEST"]
+    for amount, deficit in enumerate(top_deficits):
+        top_deficits_output.append(f"[{ranks[amount]} CASH DEFICIT] Day {deficit[0]}, Amount: SGD {abs(deficit[1])}")
+    
+    # Combine all outputs
+    final_output = "\n".join(all_deficits_output + [""] + top_deficits_output)
+    
+    return final_output
 
 # Analyzing the cash trends
 cash_analysis = analyze_cash_trends(daily_differences)
@@ -228,6 +237,7 @@ cash_analysis = analyze_cash_trends(daily_differences)
 print(cash_analysis)
 
 
+#### PROFIT AND LOSS ####
 def read_csv(data):
     # Split the data into lines
     lines = data.strip().split("\n")
@@ -241,13 +251,14 @@ def read_csv(data):
 def compute_profit_changes(data):
     # Initialize a list to store the changes in net profit
     changes = []
-    for i in range(1, len(data)):
+    for amount in range(1, len(data)):
         # Calculate the change in net profit from the previous day
-        current_profit = int(data[i]["Net Profit (Accumulated) (SGD)"])
-        previous_profit = int(data[i - 1]["Net Profit (Accumulated) (SGD)"])
+        current_profit = int(data[amount]["Net Profit (Accumulated) (SGD)"])
+        previous_profit = int(data[amount - 1]["Net Profit (Accumulated) (SGD)"])
         change = current_profit - previous_profit
+        
         # Append the day and the change to the list
-        changes.append((int(data[i]["Day"]), change))
+        changes.append((int(data[amount]["Day"]), change))
     return changes
 
 csv_data = """
@@ -335,31 +346,37 @@ csv_data = """
 """  
 
 def analyze_profit_trends(changes):
-    # Check if the net profit is always increasing or decreasing
-    increasing = all(change >= 0 for _, change in changes)
-    decreasing = all(change <= 0 for _, change in changes)
+    # Initialize a list to store all deficits
+    all_deficits = []
+    
+    # Iterate through changes to find all deficits
+    for day, change in changes:
+        if change < 0:
+            all_deficits.append((day, change))
+    
+    # Sort the deficits based on the deficit amount without using lambda
+    sorted_deficits = sorted(all_deficits, key=lambda x: x[1])
+    
+    # Prepare the output for all deficits
+    all_deficits_output = []
+    for deficit in all_deficits:
+        all_deficits_output.append(f"[NET PROFIT DEFICIT] Day: {deficit[0]}, Amount: SGD {abs(deficit[1])}")
+    
+    # Identify the top 3 highest deficits
+    top_deficits = sorted_deficits[:3]  # Assuming deficits are sorted in ascending order
+    
+    # Prepare the output for top 3 deficits
+    top_deficits_output = []
+    ranks = ["HIGHEST", "2ND HIGHEST", "3RD HIGHEST"]
+    for amount, deficit in enumerate(top_deficits):
+        top_deficits_output.append(f"[{ranks[amount]} NET PROFIT DEFICIT] Day {deficit[0]}, Amount: SGD {abs(deficit[1])}")
+    
+    # Combine all outputs
+    final_output = "\n".join(all_deficits_output + [""] + top_deficits_output)
+    
+    return final_output
 
-    # If always increasing, find and return the highest increase
-    if increasing:
-        highest_increase = max(changes, key=lambda x: x[1])
-        return f"Highest Increase: Day {highest_increase[0]}, Amount {highest_increase[1]}"
-    # If always decreasing, find and return the highest decrease
-    elif decreasing:
-        highest_decrease = min(changes, key=lambda x: x[1])
-        return f"Highest Decrease: Day {highest_decrease[0]}, Amount {abs(highest_decrease[1])}"
-    # Otherwise, calculate and return all deficits and the top 3 deficits
-    else:
-        deficits = [d for d in changes if d[1] < 0]
-        sorted_deficits = sorted(deficits, key=lambda x: x[1])
-        all_deficits_str = '\n'.join(f"[NET PROFIT DEFICIT] Day: {d[0]}, Amount: SGD {abs(d[1])}" for d in deficits)
-        top_deficits_str = "\n".join([
-            f"[HIGHEST NET PROFIT DEFICIT] Day {sorted_deficits[0][0]}, Amount: SGD {abs(sorted_deficits[0][1])}",
-            f"[2ND HIGHEST NET PROFIT DEFICIT] Day {sorted_deficits[1][0]}, Amount: SGD {abs(sorted_deficits[1][1])}",
-            f"[3RD HIGHEST NET PROFIT DEFICIT] Day {sorted_deficits[2][0]}, Amount: SGD {abs(sorted_deficits[2][1])}"
-        ])
-        return f"{all_deficits_str}\n{top_deficits_str}"
-
-# Raeding and analyzing the data
+# Reading and analyzing the data
 read_data = read_csv(csv_data)
 daily_profit_changes = compute_profit_changes(read_data)
 profit_analysis = analyze_profit_trends(daily_profit_changes)
