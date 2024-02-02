@@ -1,20 +1,20 @@
 # Team members' information
 team_members = """
 ##### Store your, name, email, student_id and class_number as STRINGS #####
-#name = 'Balce Miles Santos'
-#np_email = 's10255611@connect.np.edu.sg'
-#student_id = 'S10255611B'
-#class_number = 'TF03'
+name = 'Balce Miles Santos'
+np_email = 's10255611@connect.np.edu.sg'
+student_id = 'S10255611B'
+class_number = 'TF03'
 
-#name = "Chua Meng Sven"
-#np_email = 's10256106@connect.np.edu.sg'
-#student_id = 'S10256106H'
-#class_number = 'TF03'
+name = "Chua Meng Sven"
+np_email = 's10256106@connect.np.edu.sg'
+student_id = 'S10256106H'
+class_number = 'TF03'
 
-#name = 'Amber Chong Rei En'
-#np_email = 'S10258314@connect.np.edu.sg'
-#student_id = 'S10258314C'
-#class_number = 'TF03'
+name = 'Amber Chong Rei En'
+np_email = 'S10258314@connect.np.edu.sg'
+student_id = 'S10258314C'
+class_number = 'TF03'
 """
 
 # Write to a text file
@@ -23,13 +23,18 @@ with open('team_members.txt', 'w') as file:
 
 print("Team members' information have been written to team_members.txt")
 
-def parse_csv(data):
-    # Splitting the data string into individual lines
+
+# Extracting overheads data
+def read_csv(data):
+    # Splitting data string into individual lines
     lines = data.strip().split("\n")
-    # Removing quotes and splitting the first line to get headers
+
+    # Removing quotes ("") and splitting the first line to get headers
     header = lines[0].replace('"', '').split(",")
+
     # Processing each line, removing quotes, splitting by comma, and creating dictionaries
     rows = [line.replace('"', '').split(",") for line in lines[1:]]
+
     # Returning a list of dictionaries for each row
     return [dict(zip(header, row)) for row in rows]
 
@@ -49,6 +54,7 @@ csv_data = """
 "Human Resource Expense",13.65
 """  
 
+# Finding the highest overhead in the data
 def find_highest_overhead(data):
     # Initializing variables to store the highest overhead category and its value
     highest_overhead_category = None
@@ -56,8 +62,9 @@ def find_highest_overhead(data):
 
     # Going over each data input one by one
     for entry in data:
-        # Extracting and converting category to uppercase
+        # Extracting and converting category into uppercase
         category = entry['Category'].upper()
+
         # Converting the overhead value to a float
         overhead = float(entry['Overheads'])
 
@@ -69,15 +76,16 @@ def find_highest_overhead(data):
     # Returning the category with the highest overhead and its value
     return highest_overhead_category, max_overhead_value
 
-# Parsing the CSV data
-parsed_data = parse_csv(csv_data)
+# Reading the CSV data
+read_data = read_csv(csv_data)
 
 # Finding the category with the highest overhead
-highest_overhead_category, max_overhead_value = find_highest_overhead(parsed_data)
+highest_overhead_category, max_overhead_value = find_highest_overhead(read_data)
 
 # Printing the highest overhead category and its value
 print(f"[HIGHEST OVERHEAD] {highest_overhead_category}: {max_overhead_value}%")
-def parse_csv(data):
+
+def read_csv(data):
     # Split the input string into lines
     lines = data.strip().split("\n")
     # Remove quotes and split the first line to get headers
@@ -89,13 +97,14 @@ def parse_csv(data):
 def compute_differences(data):
     # Initialize a list to store the differences in 'Cash On Hand' between days
     differences = []
-    for i in range(1, len(data)):
+
+    for amount in range(1, len(data)):
         # Calculate the difference between the current day and the previous day
-        current_day = int(data[i]["Cash On Hand"])
-        previous_day = int(data[i - 1]["Cash On Hand"])
+        current_day = int(data[amount]["Cash On Hand"])
+        previous_day = int(data[amount - 1]["Cash On Hand"])
         difference = current_day - previous_day
         # To the list, add the day and the difference.
-        differences.append((int(data[i]["Day"]), difference))
+        differences.append((int(data[amount]["Day"]), difference))
     return differences
 
 # CSV data
@@ -183,9 +192,9 @@ csv_data = """
 90,5031869
 """  
 
-# Parse the CSV and calculate differences
-parsed_data = parse_csv(csv_data)
-daily_differences = compute_differences(parsed_data)
+# Read CSV and calculate differences
+read_data = read_csv(csv_data)
+daily_differences = compute_differences(read_data)
 
 def analyze_cash_trends(differences):
     # Check if the cash on hand is always increasing or decreasing
@@ -217,7 +226,9 @@ cash_analysis = analyze_cash_trends(daily_differences)
 
 # Output the analysis
 print(cash_analysis)
-def parse_csv(data):
+
+
+def read_csv(data):
     # Split the data into lines
     lines = data.strip().split("\n")
     # Remove quotes and split the first line to get the headers
@@ -348,9 +359,9 @@ def analyze_profit_trends(changes):
         ])
         return f"{all_deficits_str}\n{top_deficits_str}"
 
-# Parsing and analyzing the data
-parsed_data = parse_csv(csv_data)
-daily_profit_changes = compute_profit_changes(parsed_data)
+# Raeding and analyzing the data
+read_data = read_csv(csv_data)
+daily_profit_changes = compute_profit_changes(read_data)
 profit_analysis = analyze_profit_trends(daily_profit_changes)
 
 # Output the analysis

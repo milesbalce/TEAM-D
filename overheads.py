@@ -1,14 +1,18 @@
-def parse_csv(data):
-    # Splitting the data string into individual lines
+# Extracting overheads data
+def read_csv(data):
+    # Splitting data string into individual lines
     lines = data.strip().split("\n")
-    # Removing quotes and splitting the first line to get headers
+
+    # Removing quotes ("") and splitting the first line to get headers
     header = lines[0].replace('"', '').split(",")
+
     # Processing each line, removing quotes, splitting by comma, and creating dictionaries
     rows = [line.replace('"', '').split(",") for line in lines[1:]]
+
     # Returning a list of dictionaries for each row
     return [dict(zip(header, row)) for row in rows]
 
-# Sample CSV data
+# CSV data
 csv_data = """
 "Category","Overheads"
 "Salary Expense",23.54
@@ -24,15 +28,17 @@ csv_data = """
 "Human Resource Expense",13.65
 """  
 
+# Finding the highest overhead in the data
 def find_highest_overhead(data):
     # Initializing variables to store the highest overhead category and its value
     highest_overhead_category = None
     max_overhead_value = 0
 
-    # Iterating through each entry in the data
+    # Going over each data input one by one
     for entry in data:
-        # Extracting and converting category to uppercase
+        # Extracting and converting category into uppercase
         category = entry['Category'].upper()
+
         # Converting the overhead value to a float
         overhead = float(entry['Overheads'])
 
@@ -44,11 +50,11 @@ def find_highest_overhead(data):
     # Returning the category with the highest overhead and its value
     return highest_overhead_category, max_overhead_value
 
-# Parsing the CSV data
-parsed_data = parse_csv(csv_data)
+# Reading the CSV data
+read_data = read_csv(csv_data)
 
 # Finding the category with the highest overhead
-highest_overhead_category, max_overhead_value = find_highest_overhead(parsed_data)
+highest_overhead_category, max_overhead_value = find_highest_overhead(read_data)
 
 # Printing the highest overhead category and its value
 print(f"[HIGHEST OVERHEAD] {highest_overhead_category}: {max_overhead_value}%")

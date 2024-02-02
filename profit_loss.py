@@ -1,4 +1,4 @@
-def parse_csv(data):
+def read_csv(data):
     # Split the data into lines
     lines = data.strip().split("\n")
     # Remove quotes and split the first line to get the headers
@@ -127,12 +127,13 @@ def analyze_profit_trends(changes):
             f"[2ND HIGHEST NET PROFIT DEFICIT] Day {sorted_deficits[1][0]}, Amount: SGD {abs(sorted_deficits[1][1])}",
             f"[3RD HIGHEST NET PROFIT DEFICIT] Day {sorted_deficits[2][0]}, Amount: SGD {abs(sorted_deficits[2][1])}"
         ])
-        return f"{all_deficits_str}\n\n{top_deficits_str}"
+        return f"{all_deficits_str}\n{top_deficits_str}"
 
-# Parsing and analyzing the data
-parsed_data = parse_csv(csv_data)
-daily_profit_changes = compute_profit_changes(parsed_data)
+# Reading and analyzing the data
+read_data = read_csv(csv_data)
+daily_profit_changes = compute_profit_changes(read_data)
 profit_analysis = analyze_profit_trends(daily_profit_changes)
 
 # Output the analysis
 print(profit_analysis)
+

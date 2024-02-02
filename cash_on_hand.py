@@ -1,4 +1,4 @@
-def parse_csv(data):
+def read_csv(data):
     # Split the input string into lines
     lines = data.strip().split("\n")
     # Remove quotes and split the first line to get headers
@@ -10,16 +10,17 @@ def parse_csv(data):
 def compute_differences(data):
     # Initialize a list to store the differences in 'Cash On Hand' between days
     differences = []
-    for i in range(1, len(data)):
+
+    for amount in range(1, len(data)):
         # Calculate the difference between the current day and the previous day
-        current_day = int(data[i]["Cash On Hand"])
-        previous_day = int(data[i - 1]["Cash On Hand"])
+        current_day = int(data[amount]["Cash On Hand"])
+        previous_day = int(data[amount - 1]["Cash On Hand"])
         difference = current_day - previous_day
-        # Append the day and the difference to the list
-        differences.append((int(data[i]["Day"]), difference))
+        # To the list, add the day and the difference.
+        differences.append((int(data[amount]["Day"]), difference))
     return differences
 
-# Sample CSV data
+# CSV data
 csv_data = """
 "Day","Cash On Hand"
 11,339121
@@ -102,11 +103,11 @@ csv_data = """
 88,4376652
 89,4622945
 90,5031869
-"""  # Replace with the full data
+"""  
 
-# Parse the CSV and compute differences
-parsed_data = parse_csv(csv_data)
-daily_differences = compute_differences(parsed_data)
+# Read CSV and calculate differences
+read_data = read_csv(csv_data)
+daily_differences = compute_differences(read_data)
 
 def analyze_cash_trends(differences):
     # Check if the cash on hand is always increasing or decreasing
@@ -131,7 +132,7 @@ def analyze_cash_trends(differences):
             f"[2ND HIGHEST CASH DEFICIT] Day {sorted_deficits[1][0]}, Amount: SGD {abs(sorted_deficits[1][1])}",
             f"[3RD HIGHEST CASH DEFICIT] Day {sorted_deficits[2][0]}, Amount: SGD {abs(sorted_deficits[2][1])}"
         ])
-        return f"{all_deficits_str}\n\n{top_deficits_str}"
+        return f"{all_deficits_str}\n{top_deficits_str}"
 
 # Analyzing the cash trends
 cash_analysis = analyze_cash_trends(daily_differences)
