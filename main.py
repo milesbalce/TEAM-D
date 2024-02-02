@@ -226,7 +226,7 @@ def analyze_cash_trends(changes):
         top_deficits_output.append(f"[{ranks[amount]} CASH DEFICIT] Day {deficit[0]}, Amount: SGD {abs(deficit[1])}")
     
     # Combine all outputs
-    final_output = "\n".join(all_deficits_output + [""] + top_deficits_output)
+    final_output = final_output = '\n'.join(all_deficits_output) + '\n' + '\n'.join(top_deficits_output)
     
     return final_output
 
@@ -256,7 +256,7 @@ def compute_profit_changes(data):
         current_profit = int(data[amount]["Net Profit (Accumulated) (SGD)"])
         previous_profit = int(data[amount - 1]["Net Profit (Accumulated) (SGD)"])
         change = current_profit - previous_profit
-        
+
         # Append the day and the change to the list
         changes.append((int(data[amount]["Day"]), change))
     return changes
@@ -372,7 +372,7 @@ def analyze_profit_trends(changes):
         top_deficits_output.append(f"[{ranks[amount]} NET PROFIT DEFICIT] Day {deficit[0]}, Amount: SGD {abs(deficit[1])}")
     
     # Combine all outputs
-    final_output = "\n".join(all_deficits_output + [""] + top_deficits_output)
+    final_output = '\n'.join(all_deficits_output) + '\n' + '\n'.join(top_deficits_output)
     
     return final_output
 
